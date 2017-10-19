@@ -27,7 +27,57 @@ export const BPM_LIST = [
     180,
     200,
 ];
+export const GENRE_LIST = {
+  Trance: {
+    bpmMin: 130,
+    bpmMax: 150,
+  },
+  Dubstep: {
+    bpmMin: 60,
+    bpmMax: 120,
+  },
+  'Drum & Bass': {
+    bpmMin: 160,
+    bpmMax: 190,
+  },
+  Orchestral: {
+    bpmMin: 60,
+    bpmMax: 200,
+  },
+  Techno: {
+    bpmMin: 110,
+    bpmMax: 145,
+  },
+  Hardcore: {
+    bpmMin: 160,
+    bpmMax: 200,
+  },
+  Minimal: {
+    bpmMin: 90,
+    bpmMax: 160,
+  },
+  House: {
+    bpmMin: 110,
+    bpmMax: 135,
+  }
+};
 
+export const KEYS = [
+  'Ab',
+  'A', 
+  'Bb', 
+  'B', 
+  'C', 
+  'Db', 
+  'D', 
+  'Eb', 
+  'E', 
+  'F', 
+  'Gb',
+  'G',
+];
+
+/*
 export const GENRE_LIST = [
     'Glitch Hop',
     'Breakbeat',
@@ -105,4 +155,4 @@ export const GENRE_LIST = [
     'UK Hardcore',
     'Speedcore',
     'Symphony',
-];
+];*/

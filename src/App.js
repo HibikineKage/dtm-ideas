@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import {BPM_LIST, GENRE_LIST} from './data.js';
+import {BPM_LIST, GENRE_LIST, KEYS} from './data.js';
 
 function randArray(i_ary){
   const aryKeys = Object.keys(i_ary);
@@ -9,7 +9,7 @@ function randArray(i_ary){
   return i_ary[index];
 }
 
-function setColor() {
+function randomColor() {
   return '#' + ('00000'+(Math.floor(Math.random()*255*255*255)).toString(16)).slice(-6);
 }
 
@@ -27,6 +27,23 @@ function CheckBox(props){
   );
 }
 
+function valueMap(input, inputMin, inputMax, outputMin, outputMax) {
+  return (input - inputMin) * (outputMax - outputMin) / (inputMax - inputMin) + outputMin;
+}
+
+function randomBpm(genre) {
+  const {bpmMax, bpmMin} = GENRE_LIST[genre];
+  return Math.floor(valueMap(Math.random(), 0, 1, bpmMin, bpmMax))
+}
+
+function randomGenre() {
+  return randArray(Object.keys(GENRE_LIST))
+}
+
+function randomKey() {
+  return randArray(KEYS) + (Math.random() > 0.5 ? '' : 'm');
+}
+
 class App extends Component {
   constructor(props){
     super(props)
@@ -34,19 +51,24 @@ class App extends Component {
       bpm: null,
       genre: null,
       color: null,
+      key: null,
       showBpm: true,
       showGenre: true,
       showColor: true,
+      showKey: true,
     };
     this.buttonPushedBind = this.buttonPushed.bind(this);
   }
   
   buttonPushed() {
-    const {showBpm, showGenre, showColor} = this.state;
+    const {showBpm, showGenre, showColor, showKey} = this.state;
+    const genre = randomGenre();
+    const bpm = randomBpm(genre);
     this.setState({
-      bpm: showBpm ? randArray(BPM_LIST) : null,
-      genre: showGenre ? randArray(GENRE_LIST) : null,
-      color: showColor ? setColor() : null,
+      bpm: showBpm ? bpm : null,
+      genre: showGenre ? genre : null,
+      color: showColor ? randomColor() : null,
+      key: showKey ? randomKey() : null,
     });
   }
   
@@ -80,8 +102,17 @@ class App extends Component {
     );
   }
   
+  renderKey() {
+    if (this.state.key === null) {
+      return null;
+    }
+    return (
+      <div>Key: {this.state.key}</div>
+    );
+  }
+  
   render() {
-    const {showBpm, showGenre, showColor} = this.state;
+    const {showBpm, showGenre, showColor, showKey} = this.state;
     return (
       <div className="App">
         <h1>DTM Ideas</h1>
@@ -103,10 +134,18 @@ class App extends Component {
             this.setState({showColor: !showColor})
           }}
           name="Color" />
+        <CheckBox
+          value={showKey}
+          callback={(e)=>{
+            this.setState({showKey: !showKey})
+          }}
+          name="Key" />
+          
         <button onClick={this.buttonPushedBind}>Come on my awesome track!</button>
         {this.state.showBpm && this.renderBpm()}
         {this.state.showGenre && this.renderGenre()}
         {this.state.showColor && this.renderColor()}
+        {this.state.showKey && this.renderKey()}
       </div>
     );
   }
